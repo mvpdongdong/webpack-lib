@@ -25,7 +25,8 @@ module.exports = {
     overlay: true,
     stats: {
       colors: true
-    }
+    },
+    publicPath: '/assets/'
   },
   output: {
     path: path.resolve(__dirname, '../'),
@@ -34,42 +35,39 @@ module.exports = {
     // library: 'libName'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loaders: isProd ? ['babel-loader']: ['babel-loader', 'eslint-loader'],
+        use: isProd ? ['babel-loader']: ['babel-loader', 'eslint-loader'],
         exclude: [/node_modules/, resolve('src/lib')]
       },
       {
-        test: /.js$/,
-        enforce: 'post', // post-loader处理
-        loader: 'es3ify-loader'
-      },
-      {
         test: /\.ejs$/,
-        loader: 'ejs-compiled?htmlmin'
+        use: ['ejs-compiled?htmlmin']
       },
       {
         test: /\.scss$/,
         loader: isProd
-          ? 'style!css!postcss!sass'
-          : 'style?sourceMap!css?sourceMap!postcss?sourceMap!sass?sourceMap'
+          ? 'style-loader!css-loader!postcss-loader!sass-loader'
+          : 'style-loader?sourceMap!css-loader?sourceMap!postcss-loader?sourceMap!sass-loader?sourceMap'
 
       },
       {
         test: /\.css$/,
         loader: isProd
-          ? 'style!css!postcss'
-          : 'style?sourceMap!css?sourceMap!postcss?sourceMap'
+          ? 'style-loader!css-loader!postcss-loader'
+          : 'style-loader?sourceMap!css-loader?sourceMap!postcss-loader?sourceMap'
 
       },
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
-        loader: 'url-loader',
-        query: {
-          limit: 2048,
-          name: isProd ? 'img/[name].[hash:7].[ext]' : 'img/[name].[ext]'
-        }
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 2048,
+            name: isProd ? 'img/[name].[hash:7].[ext]' : 'img/[name].[ext]'
+          }
+        }],
       }
     ]
   },

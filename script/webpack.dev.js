@@ -4,6 +4,7 @@ exports = require('./webpack.base');
 
 exports.output.filename = `${pkg.name}.js`;
 exports.devtool = 'source-map';
+exports.mode = 'development';
 
 exports.plugins = exports.plugins.concat([
   new webpack.NamedModulesPlugin()

@@ -1,26 +1,25 @@
-const webpack = require('webpack');
 const pkg = require('../package.json');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 exports = require('./webpack.base');
 
 exports.output.filename = `${pkg.name}.min.js`;
 exports.devtool = false;
-exports.plugins = exports.plugins.concat([
-  new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      properties: false,
-      warnings: false,
-      drop_console: true,
-      screw_ie8: false
-    },
-    output: {
-      quote_keys: true,
-      screw_ie8: false
-    },
-    mangle: {
-      screw_ie8: false
-    },
-    sourceMap: false
-  })
-]);
-
+exports.mode = 'production';
+exports.optimization = {
+  minimizer: [
+    new UglifyJSPlugin({
+      cache: true,
+      parallel: true,
+      uglifyOptions: {
+        compress: {
+          drop_console: true
+        },
+        output: {
+          comments: false
+        }
+      }
+    })
+  ],
+  hashedModuleIds: true
+},
 module.exports = exports;
