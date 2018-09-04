@@ -1,0 +1,5 @@
+{
+  "presets": ["env", "stage-2"],
+  "plugins": ["transform-runtime", "transform-remove-strict-mode", "transform-es3-property-literals", "transform-es3-member-expression-literals"],
+  "comments": false
+}
